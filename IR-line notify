@@ -1,1 +1,32 @@
-a
+#include <TridentTD_LineNotify.h>
+#define S1 13
+int Val;
+
+#define SSID      "JoyOus" // ชื่อ Wi- Fi ที่ต้องการให้ ESP32  เชื่อมต่อ
+#define PASSWORD  "685321320" // รหัส Wi-Fi 
+#define LINE_TOKEN  "Ypml3ylFkHjbeTBP0r27Hc0NrEWI3sIyevLITTK1A8M" //Token line ที่ขอมาจาก 67 IR LineNotify
+
+void setup() {
+  pinMode(S1,INPUT); 
+  Serial.begin(9600);
+  WiFi.begin(SSID,PASSWORD); // เชื่อมต่อ Wi-Fi
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(".");
+  }
+  Serial.println(""); // เชื่อมต่อเสร็จหลุดออกจากลูป มาทำบรรทัดนี้ลงไป
+  Serial.println("WiFi connected");
+  LINE.setToken(LINE_TOKEN); // เชื่อมต่อกับ Token Line
+}
+void loop() {
+  Val = digitalRead(S1);
+  Serial.println(Val);
+   if (Val == 0){
+     Serial.println(Val);
+     LINE.notify("Found Intruder"); // ส่งข้อความไปยัง Line "แจ้งเตือน : ตรวจพบผู้บุกรุก"
+  }
+  else {
+     //LINE.notify("Normal");
+  }
+  delay(200);
+}
